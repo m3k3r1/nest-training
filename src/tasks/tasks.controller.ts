@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -13,7 +14,8 @@ import {
 import { CreateTaskDTO } from './dtos/create-task.dto';
 import { FilterTaskDTO } from './dtos/filter-task.dto';
 import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
-import { Task, TaskStatus } from './tasks.model';
+import { TaskStatus } from './task-status.enum';
+import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')
@@ -24,10 +26,7 @@ export class TasksController {
   findAll(
     @Query(ValidationPipe) filterTaskDTO: FilterTaskDTO,
   ): Promise<Task[]> {
-    if (Object.keys(filterTaskDTO).length) {
-      return this.tasksService.filterTasks(filterTaskDTO);
-    }
-    return this.tasksService.findAll();
+    return this.tasksService.getTasks(filterTaskDTO);
   }
 
   @Get('/:id')
